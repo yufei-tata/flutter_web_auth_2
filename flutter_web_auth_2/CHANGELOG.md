@@ -1,3 +1,9 @@
+## 2.1.4
+
+- 🌹 Support AGP `8.x` namespace declaration
+- 🌹 Fix web example to work "properly"
+- 🐛 Update `flutter_web_auth_2_platform_interface` to require `2.1.3` at least
+
 ## 2.1.3
 
 - 🌹 Add `contextArgs` for web implementations (See [#40](https://github.com/ThexXTURBOXx/flutter_web_auth_2/issues/40))
