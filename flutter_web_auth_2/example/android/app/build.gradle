@@ -27,6 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 33
+    namespace 'com.linusu.flutter_web_auth_2_example'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
