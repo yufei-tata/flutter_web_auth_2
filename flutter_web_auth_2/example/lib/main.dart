@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io' show HttpServer, Platform;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
@@ -77,7 +78,9 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    startServer();
+    if (!kIsWeb) {
+      startServer();
+    }
   }
 
   Future<void> startServer() async {
@@ -108,11 +111,18 @@ class MyAppState extends State<MyApp> {
   }
 
   Future<void> authenticate() async {
-    const url = 'http://127.0.0.1:43823/';
+    // Normally, you don't need to specify a custom URL on web. However, in
+    // this example, we just go the auth page directly since we cannot start
+    // the socket server...
+    // YOU NEED TO PROPERLY CHANGE THIS PORT IF YOU WANT TO RUN THIS EXAMPLE!
+    const url =
+        kIsWeb ? 'http://localhost:53563/auth.html' : 'http://127.0.0.1:43823/';
+
     // Windows needs some callback URL on localhost
-    final callbackUrlScheme = (Platform.isWindows || Platform.isLinux)
-        ? 'http://localhost:43824'
-        : 'foobar';
+    final callbackUrlScheme =
+        !kIsWeb && (Platform.isWindows || Platform.isLinux)
+            ? 'http://localhost:43824'
+            : 'foobar';
 
     try {
       final result = await FlutterWebAuth2.authenticate(
