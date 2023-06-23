@@ -3,7 +3,7 @@
 - 🌹 Fix support for Dart `3.x`
 - 🌹 Support AGP `8.x` namespace declaration
 - 🌹 Fix web example to work "properly"
-- 🐛 Update `flutter_web_auth_2_platform_interface` to require `2.1.3` at least
+- 🐛 Update `flutter_web_auth_2_platform_interface` to require `2.1.4` at least
 
 ## 2.1.3
 
