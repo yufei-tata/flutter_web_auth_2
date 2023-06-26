@@ -1,3 +1,8 @@
+## 2.1.5
+
+- 🌹 Fix example support for Dart `3.x`
+- 🐛 Implement protocol handler to supply `ASPresentationAnchor` (See [#51](https://github.com/ThexXTURBOXx/flutter_web_auth_2/issues/51))
+
 ## 2.1.4
 
 - 🌹 Fix support for Dart `3.x`
