@@ -135,14 +135,13 @@ On the web platform, an endpoint must be created that captures the callback URL 
 <title>Authentication complete</title>
 <p>Authentication is complete. If this does not happen automatically, please close the window.</p>
 <script>
-    if(window.opener) {
-        window.opener.postMessage({
-        'flutter-web-auth-2': window.location.href
-        }, window.location.origin);
-    } else {
-        //if window.opener is null, we fallback to the local storage approach.
-        localStorage.setItem('flutter-web-auth-2', window.location.href);
-    }
+  if (window.opener) {
+    window.opener.postMessage({
+      'flutter-web-auth-2': window.location.href
+    }, window.location.origin);
+  } else {
+    localStorage.setItem('flutter-web-auth-2', window.location.href);
+  }
   window.close();
 </script>
 ```
