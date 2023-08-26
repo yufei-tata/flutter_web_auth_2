@@ -3,7 +3,6 @@ import 'dart:io' show HttpServer, Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
 const html = '''
@@ -133,7 +132,7 @@ class MyAppState extends State<MyApp> {
       setState(() {
         _status = 'Got result: $result';
       });
-    } on PlatformException catch (e) {
+    } catch (e) {
       setState(() {
         _status = 'Got error: $e';
       });
