@@ -1,3 +1,10 @@
+## 2.2.0
+
+- 🎉 Add fallback for `window.opener` being `null` on Web (See [#58](https://github.com/ThexXTURBOXx/flutter_web_auth_2/issues/58)) **(See enhanced/better setup instructions for Web in the README!)**
+- 🌹 Add delay to example
+- 🌹 Bring back support for older AGP versions
+- 🐛 Fix `compileOptions` on Android (See [#59](https://github.com/ThexXTURBOXx/flutter_web_auth_2/issues/59))
+
 ## 2.1.5
 
 - 🌹 Fix example support for Dart `3.x`
