@@ -1,3 +1,7 @@
+## 2.2.1
+
+- 🌹 Timeouts (5 minutes) on Web throw real errors now
+
 ## 2.2.0
 
 - 🎉 Add fallback for `window.opener` being `null` on Web (See [#58](https://github.com/ThexXTURBOXx/flutter_web_auth_2/issues/58)) **(See enhanced/better setup instructions for Web in the README!)**
