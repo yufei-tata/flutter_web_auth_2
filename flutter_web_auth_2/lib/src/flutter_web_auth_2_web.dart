@@ -51,7 +51,6 @@ class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
 
     // Remove the old record if it exists
     const storageKey = 'flutter-web-auth-2';
-    var timeout = 5 * 60; // 5 minutes
     window.localStorage.remove(storageKey);
     Timer? lsTimer;
     StreamSubscription? messageSubscription;
@@ -61,7 +60,6 @@ class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
       // If it exists, return it. If not, check the timeout.
       // If the timeout has passed, throw an exception.
       lsTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        --timeout;
         if (window.localStorage.containsKey(storageKey)) {
           final flutterWebAuthMessage = window.localStorage[storageKey];
           if (flutterWebAuthMessage is String) {
@@ -70,15 +68,24 @@ class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
             messageSubscription?.cancel();
             timer.cancel();
           } else {
-            throw PlatformException(
-              code: 'error',
-              message: 'Callback value is not a string',
+            messageSubscription?.cancel();
+            timer.cancel();
+            completer.completeError(
+              PlatformException(
+                code: 'error',
+                message: 'Callback value is not a string',
+              ),
             );
           }
-        } else if (timeout == 0) {
-          throw PlatformException(
-            code: 'error',
-            message: 'Timeout waiting for callback value',
+        } else if (timer.tick >= 5 * 60) {
+          // Hard-coded 5 minutes timeout
+          messageSubscription?.cancel();
+          timer.cancel();
+          completer.completeError(
+            PlatformException(
+              code: 'error',
+              message: 'Timeout waiting for callback value',
+            ),
           );
         }
       });
