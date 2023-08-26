@@ -39,7 +39,7 @@ class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
     }
   }
 
-  @override
+   @override
   Future<String> authenticate({
     required String url,
     required String callbackUrlScheme,
@@ -47,34 +47,92 @@ class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
     String? redirectOriginOverride,
     List contextArgs = const [],
   }) async {
+
     context.callMethod('open', <dynamic>[url] + contextArgs);
-    await for (final MessageEvent messageEvent in window.onMessage) {
-      if (messageEvent.origin == (redirectOriginOverride ?? Uri.base.origin)) {
-        final flutterWebAuthMessage = messageEvent.data['flutter-web-auth-2'];
-        if (flutterWebAuthMessage is String) {
-          return flutterWebAuthMessage;
-        }
-      }
-      final appleOrigin = Uri(scheme: 'https', host: 'appleid.apple.com');
-      if (messageEvent.origin == appleOrigin.toString()) {
-        try {
-          final data = jsonDecode(messageEvent.data.toString());
-          if (data['method'] == 'oauthDone') {
-            final appleAuth =
-                data['data']['authorization'] as Map<String, dynamic>?;
-            if (appleAuth != null) {
-              final appleAuthQuery = Uri(queryParameters: appleAuth).query;
-              return appleOrigin.replace(fragment: appleAuthQuery).toString();
+    
+    //new method using local storage as a work-around 
+    //for some browsers & oauth implementations
+
+      //remove the old record if it exists
+      const storageKey = 'flutter-web-auth-2';
+      const timeout = Duration(minutes: 5);
+      window.localStorage.remove(storageKey);
+      final timeoutTime = DateTime.now().add(timeout);
+      Timer? lsTimer;
+      StreamSubscription? messageSubscription;
+      final completer = Completer<String>();
+      try{
+        //periodicity check for the callback value in local storage.
+        //if it exists, return it.  if not, check the timeout.
+        //if the timeout has passed, throw an exception.
+        lsTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+          
+          if(window.localStorage.containsKey(storageKey)) {
+            final flutterWebAuthMessage = window.localStorage[storageKey];
+            if (flutterWebAuthMessage is String) {
+              completer.complete(flutterWebAuthMessage);
+              window.localStorage.remove(storageKey);
+              messageSubscription?.cancel();
+              timer.cancel();
+            } else {
+              throw PlatformException(
+                code: 'error',
+                message: 'Callback value is not a string',
+              );
+            }
+          } else if(DateTime.now().isAfter(timeoutTime)) {
+            throw PlatformException(
+              code: 'error',
+              message: 'Timeout waiting for callback value',
+            );
+          }
+        });
+
+      
+
+        //Traditional window.opener method of listening for the redirect
+        messageSubscription = window.onMessage.listen((MessageEvent messageEvent) {
+
+          if (messageEvent.origin == (redirectOriginOverride ?? Uri.base.origin)) {
+            final flutterWebAuthMessage = messageEvent.data['flutter-web-auth-2'];
+            if (flutterWebAuthMessage is String) {
+              lsTimer?.cancel();
+              messageSubscription?.cancel();
+              completer.complete(flutterWebAuthMessage);
             }
           }
-        } on FormatException {
-          // ignore exception
-        }
+
+          final appleOrigin = Uri(scheme: 'https', host: 'appleid.apple.com');
+          if (messageEvent.origin == appleOrigin.toString()) {
+            try {
+              final data = jsonDecode(messageEvent.data.toString());
+              if (data['method'] == 'oauthDone') {
+                final appleAuth =
+                    data['data']['authorization'] as Map<String, dynamic>?;
+                if (appleAuth != null) {
+                  final appleAuthQuery = Uri(queryParameters: appleAuth).query;
+                  lsTimer?.cancel();
+                  messageSubscription?.cancel();
+                  completer.complete(appleOrigin.replace(fragment: appleAuthQuery).toString());
+                }
+              }
+            } on FormatException {
+              // ignore exception
+            }
+
+          }
+      },
+        onError: (error) {
+          lsTimer?.cancel();
+          messageSubscription?.cancel();
+          throw error;
+        },
+      );
+      } catch(e) {
+        lsTimer?.cancel();
+        completer.completeError(e);
       }
-    }
-    throw PlatformException(
-      code: 'error',
-      message: 'Iterable window.onMessage is empty',
-    );
+
+      return completer.future;
   }
 }
