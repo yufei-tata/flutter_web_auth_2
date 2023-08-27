@@ -22,7 +22,7 @@ Add the following snippet to your `pubspec.yaml` and follow the [Setup guide](#s
 
 ```yaml
 dependencies:
-  flutter_web_auth_2: ^2.0.0
+  flutter_web_auth_2: ^3.0.0
 ```
 
 To authenticate against your own custom site:
@@ -80,11 +80,29 @@ final accessToken = jsonDecode(response.body)['access_token'] as String;
 
 **Note:** To use multiple scopes with Google, you need to encode them as a single string, separated by spaces. For example, `scope: 'email https://www.googleapis.com/auth/userinfo.profile'`. Here is [a list of all supported scopes](https://developers.google.com/identity/protocols/oauth2/scopes).
 
+## Upgrading to `3.x`
+
+Version `3.0.0` featured a huge refactor which made it possible to maintain even more configuration
+possibilities. Even platform-specific ones! If you want to upgrade, you need to do the following:
+- Follow the [Setup] within this README again for your platform and do it from scratch (there might
+  be changes!)
+- Dart SDK constraints have been updated to `>=2.15.0`.
+- The configuration parameters have been removed from the `authenticate` function. Now, you have to
+  pass a `FlutterWebAuth2Options` object with those options in it instead:
+  - `contextArgs`: This is now called `windowName` within `FlutterWebAuth2Options`.
+  - `redirectOriginOverride`: This is now called `debugOrigin` within `FlutterWebAuth2Options`.
+  - `preferEphemeral`: This has been split into the two named parameters `preferEphemeral` (for
+    iOS and MacOS) and `intentFlags` (for Android) within `FlutterWebAuth2Options`. The former works
+    exactly the same. However, if you want the old behaviour using `preferEphemeral` on Android, use
+    the `ephemeralIntentFlags` constant as value for `intentFlags`.
+
 ## Upgrading from `flutter_web_auth`
 
 If you used `flutter_web_auth` correctly (and without extra hackage) before, it should be sufficient to replace the following strings *everywhere* (yes, also in `AndroidManifest.xml` for example):
 - `FlutterWebAuth` -> `FlutterWebAuth2`
 - `flutter_web_auth` -> `flutter_web_auth_2`
+
+If you are using versions `>= 3.0.0`, you also need to follow the migration guide(s) above!
 
 If you are still unsure or something is not working as well as before, please [open a new issue](https://github.com/ThexXTURBOXx/flutter_web_auth_2/issues/new/choose).
 
@@ -115,6 +133,9 @@ In order to capture the callback url, the following `activity` needs to be added
 </manifest>
 ```
 
+If you are using `http` or `https` as your callback scheme, you also need to specify a host etc.
+See [c:geo](https://github.com/cgeo/cgeo/blob/d7ab67629ac4798adaae194e563afe7df134fcd0/main/AndroidManifest.xml#L164) as an example for this.
+
 ### iOS
 
 For "normal" authentication, just use this library as usual; there is nothing special to do!
@@ -128,7 +149,7 @@ final result = await FlutterWebAuth2.authenticate(url: "https://my-custom-app.co
 
 ### Web
 
-On the web platform, an endpoint must be created that captures the callback URL and sends it to the application using the JavaScript `postMessage()` method. In the `./web` folder of the project, create an HTML file named, e.g. `auth.html` with content:
+On the Web platform, an endpoint must be created that captures the callback URL and sends it to the application using the JavaScript `postMessage()` method. In the `./web` folder of the project, create an HTML file named, e.g. `auth.html` with content:
 
 ```html
 <!DOCTYPE html>
@@ -148,9 +169,9 @@ On the web platform, an endpoint must be created that captures the callback URL 
 
 The redirect URL passed to the authentication service must be the same as the URL the application is running on (schema, host, port if necessary) and the path must point to the generated HTML file, in this case `/auth.html`. The `callbackUrlScheme` parameter of the `authenticate()` method does not take this into account, so it is possible to use a schema for native platforms in the code.
 
-For the Sign in with Apple in web_message response mode, postMessage from https://appleid.apple.com is also captured, and the authorization object is returned as a URL fragment encoded as a query string (for compatibility with other providers).
+For the Sign in with Apple in web_message response mode, postMessage from https://appleid.apple.com is also captured, and the authorisation object is returned as a URL fragment encoded as a query string (for compatibility with other providers).
 
-If you want to pass additional parameters to the URL open call, you can do so in the `authenticate` function using the parameter `contextArgs`.
+If you want to pass additional parameters to the URL open call, you can do so in the `authenticate` function using the parameter `windowName` from the options.
 
 ### Windows and Linux
 
@@ -235,6 +256,9 @@ When you use this package for the first time, you may experience some problems. 
     +   android:name="com.linusu.flutter_web_auth_2.CallbackActivity"
     +   android:exported="true">
     ```
+  
+- If you want to have a callback URL with `http` or `https` scheme, you also need to specify a host etc.
+  See [c:geo](https://github.com/cgeo/cgeo/blob/d7ab67629ac4798adaae194e563afe7df134fcd0/main/AndroidManifest.xml#L164) as an example for this.
 
 ### Troubleshooting OAuth redirects
 
