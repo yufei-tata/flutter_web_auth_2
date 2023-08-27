@@ -1,3 +1,10 @@
+## 3.0.0-alpha.0
+
+- 💥 Bump Dart SDK constraints to `>=2.15.0`
+- 💥 Huge refactor with more configuration possibilities
+- 🎉 Add `melos` to project
+- 🌹 Cleanup Android implementation
+
 ## 2.2.1
 
 - 🌹 Timeouts (5 minutes) on Web throw real errors now
