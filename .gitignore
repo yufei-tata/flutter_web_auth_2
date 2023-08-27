@@ -9,5 +9,8 @@ build/
 .idea/
 *.iml
 pubspec.lock
+pubspec_overrides.yaml
 
 .gradle/
+
+doc/
