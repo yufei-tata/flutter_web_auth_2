@@ -1,3 +1,7 @@
+## 3.0.0-alpha.1
+
+- 🐛 Update platform interface version
+
 ## 3.0.0-alpha.0
 
 - 💥 Bump Dart SDK constraints to `>=2.15.0`
