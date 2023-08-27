@@ -9,16 +9,12 @@ class FlutterWebAuth2MethodChannel extends FlutterWebAuth2Platform {
   Future<String> authenticate({
     required String url,
     required String callbackUrlScheme,
-    required bool preferEphemeral,
-    String? redirectOriginOverride,
-    List contextArgs = const [],
+    required Map<String, dynamic> options,
   }) async =>
       await channel.invokeMethod<String>('authenticate', <String, dynamic>{
         'url': url,
         'callbackUrlScheme': callbackUrlScheme,
-        'preferEphemeral': preferEphemeral,
-        'redirectOriginOverride': redirectOriginOverride,
-        'contextArgs': contextArgs,
+        'options': options,
       }) ??
       '';
 

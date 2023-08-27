@@ -19,7 +19,7 @@ public class SwiftFlutterWebAuth2Plugin: NSObject, FlutterPlugin {
            let urlString = arguments["url"] as? String,
            let url = URL(string: urlString),
            let callbackURLScheme = arguments["callbackUrlScheme"] as? String,
-           let preferEphemeral = arguments["preferEphemeral"] as? Bool
+           let options = arguments["options"] as? Dictionary<String, AnyObject>
         {
             var sessionToKeepAlive: Any? // if we do not keep the session alive, it will get closed immediately while showing the dialog
             completionHandler = { (url: URL?, err: Error?) in
@@ -94,7 +94,7 @@ public class SwiftFlutterWebAuth2Plugin: NSObject, FlutterPlugin {
                         return
                     }
                     session.presentationContextProvider = contextProvider
-                    session.prefersEphemeralWebBrowserSession = preferEphemeral
+                    session.prefersEphemeralWebBrowserSession = options["preferEphemeral"]
                 }
 
                 session.start()

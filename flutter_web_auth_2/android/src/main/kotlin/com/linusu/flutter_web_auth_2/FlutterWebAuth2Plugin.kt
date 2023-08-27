@@ -46,17 +46,14 @@ class FlutterWebAuth2Plugin(private var context: Context? = null, private var ch
         "authenticate" -> {
           val url = Uri.parse(call.argument("url"))
           val callbackUrlScheme = call.argument<String>("callbackUrlScheme")!!
-          val preferEphemeral = call.argument<Boolean>("preferEphemeral")!!
+          val options = call.argument<Map<String, Any>>("options")!!
 
           callbacks[callbackUrlScheme] = resultCallback
 
           val intent = CustomTabsIntent.Builder().build()
           val keepAliveIntent = Intent(context, KeepAliveService::class.java)
 
-          intent.intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-          if (preferEphemeral) {
-              intent.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-          }
+          intent.intent.addFlags(options["intentFlags"] as Int)
           intent.intent.putExtra("android.support.customtabs.extra.KEEP_ALIVE", keepAliveIntent)
 
           intent.launchUrl(context!!, url)

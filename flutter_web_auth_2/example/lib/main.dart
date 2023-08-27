@@ -3,6 +3,7 @@ import 'dart:io' show HttpServer, Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
 const html = '''
@@ -110,6 +111,10 @@ class MyAppState extends State<MyApp> {
   }
 
   Future<void> authenticate() async {
+    setState(() {
+      _status = '';
+    });
+
     // Normally, you don't need to specify a custom URL on web. However, in
     // this example, we just go the auth page directly since we cannot start
     // the socket server...
@@ -127,12 +132,14 @@ class MyAppState extends State<MyApp> {
       final result = await FlutterWebAuth2.authenticate(
         url: url,
         callbackUrlScheme: callbackUrlScheme,
-        // If needed: preferEphemeral: true,
+        options: const FlutterWebAuth2Options(
+          timeout: 5, // example: 5 seconds timeout
+        ),
       );
       setState(() {
         _status = 'Got result: $result';
       });
-    } catch (e) {
+    } on PlatformException catch (e) {
       setState(() {
         _status = 'Got error: $e';
       });

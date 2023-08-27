@@ -35,7 +35,7 @@ flutter:
         pluginClass: FlutterWebAuth2Plugin
       web:
         pluginClass: FlutterWebAuth2WebPlugin
-        fileName: src/flutter_web_auth_2_web.dart
+        fileName: src/web.dart
       windows:
         dartPluginClass: FlutterWebAuth2WindowsPlugin
         pluginClass: none

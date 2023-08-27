@@ -1,4 +1,4 @@
-import 'package:flutter_web_auth_2_platform_interface/method_channel/method_channel_flutter_web_auth_2.dart';
+import 'package:flutter_web_auth_2_platform_interface/method_channel/method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 /// The interface that implementations of FlutterWebAuth must implement.
@@ -17,25 +17,22 @@ abstract class FlutterWebAuth2Platform extends PlatformInterface {
   static FlutterWebAuth2Platform get instance => _instance;
 
   /// Platform-specific plugins should set this with their own platform-specific
-  /// class that extends [PlatformInterface] when they register themselves.
+  /// class that extends [FlutterWebAuth2Platform] when they register
+  /// themselves.
   static set instance(FlutterWebAuth2Platform instance) {
-    PlatformInterface.verifyToken(instance, _token);
+    PlatformInterface.verify(instance, _token);
     _instance = instance;
   }
 
   Future<String> authenticate({
     required String url,
     required String callbackUrlScheme,
-    required bool preferEphemeral,
-    String? redirectOriginOverride,
-    List contextArgs = const [],
+    required Map<String, dynamic> options,
   }) =>
       _instance.authenticate(
         url: url,
         callbackUrlScheme: callbackUrlScheme,
-        preferEphemeral: preferEphemeral,
-        redirectOriginOverride: redirectOriginOverride,
-        contextArgs: contextArgs,
+        options: options,
       );
 
   Future clearAllDanglingCalls() => _instance.clearAllDanglingCalls();

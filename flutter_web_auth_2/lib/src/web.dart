@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
-import 'dart:js';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_web_auth_2/src/options.dart';
 import 'package:flutter_web_auth_2_platform_interface/flutter_web_auth_2_platform_interface.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
   static void registerWith(Registrar registrar) {
@@ -26,9 +27,7 @@ class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
         return authenticate(
           url: url,
           callbackUrlScheme: '',
-          preferEphemeral: false,
-          redirectOriginOverride:
-              call.arguments['redirectOriginOverride']?.toString(),
+          options: call.arguments['options'],
         );
       default:
         throw PlatformException(
@@ -43,11 +42,14 @@ class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
   Future<String> authenticate({
     required String url,
     required String callbackUrlScheme,
-    required bool preferEphemeral,
-    String? redirectOriginOverride,
-    List contextArgs = const [],
+    required Map<String, dynamic> options,
   }) async {
-    context.callMethod('open', <dynamic>[url] + contextArgs);
+    final parsedOptions = FlutterWebAuth2Options.fromJson(options);
+
+    await launchUrl(
+      Uri.parse(url),
+      webOnlyWindowName: parsedOptions.windowName,
+    );
 
     // Remove the old record if it exists
     const storageKey = 'flutter-web-auth-2';
@@ -77,8 +79,7 @@ class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
               ),
             );
           }
-        } else if (timer.tick >= 5 * 60) {
-          // Hard-coded 5 minutes timeout
+        } else if (timer.tick >= parsedOptions.timeout) {
           messageSubscription?.cancel();
           timer.cancel();
           completer.completeError(
@@ -94,7 +95,7 @@ class FlutterWebAuth2WebPlugin extends FlutterWebAuth2Platform {
       messageSubscription = window.onMessage.listen(
         (messageEvent) {
           if (messageEvent.origin ==
-              (redirectOriginOverride ?? Uri.base.origin)) {
+              (parsedOptions.debugOrigin ?? Uri.base.origin)) {
             final flutterWebAuthMessage =
                 messageEvent.data['flutter-web-auth-2'];
             if (flutterWebAuthMessage is String) {

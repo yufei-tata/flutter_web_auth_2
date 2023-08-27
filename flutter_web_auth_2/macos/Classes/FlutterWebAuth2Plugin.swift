@@ -14,7 +14,7 @@ public class FlutterWebAuth2Plugin: NSObject, FlutterPlugin, ASWebAuthentication
         if call.method == "authenticate" {
             let url = URL(string: (call.arguments as! Dictionary<String, AnyObject>)["url"] as! String)!
             let callbackURLScheme = (call.arguments as! Dictionary<String, AnyObject>)["callbackUrlScheme"] as! String
-			let preferEphemeral = (call.arguments as! Dictionary<String, AnyObject>)["preferEphemeral"] as? Bool
+			let options = (call.arguments as! Dictionary<String, AnyObject>)["options"] as? Dictionary<String, AnyObject>
 
             var keepMe: Any? = nil
             let completionHandler = { (url: URL?, err: Error?) in
@@ -34,7 +34,7 @@ public class FlutterWebAuth2Plugin: NSObject, FlutterPlugin, ASWebAuthentication
             }
 
             let session = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURLScheme, completionHandler: completionHandler)
-			session.prefersEphemeralWebBrowserSession = preferEphemeral ?? false
+			session.prefersEphemeralWebBrowserSession = options["preferEphemeral"] ?? false
             session.presentationContextProvider = self
 
             session.start()

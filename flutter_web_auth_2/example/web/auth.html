@@ -4,7 +4,7 @@
 close the window.
 <script>
   setTimeout(function(){
-    if (!window.opener) {
+    if (window.opener) {
       window.opener.postMessage({
         'flutter-web-auth-2': window.location.href
       }, window.location.origin);

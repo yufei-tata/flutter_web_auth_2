@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:flutter_web_auth_2_platform_interface/flutter_web_auth_2_platform_interface.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:window_to_front/window_to_front.dart';
@@ -42,23 +43,23 @@ const html = '''
 ''';
 
 /// Implements the plugin interface for Windows.
-class FlutterWebAuth2LinuxPlugin extends FlutterWebAuth2Platform {
+class FlutterWebAuth2WindowsPlugin extends FlutterWebAuth2Platform {
   HttpServer? _server;
   Timer? _authTimeout;
 
   /// Registers the Windows implementation.
   static void registerWith() {
-    FlutterWebAuth2Platform.instance = FlutterWebAuth2LinuxPlugin();
+    FlutterWebAuth2Platform.instance = FlutterWebAuth2WindowsPlugin();
   }
 
   @override
   Future<String> authenticate({
     required String url,
     required String callbackUrlScheme,
-    required bool preferEphemeral,
-    String? redirectOriginOverride,
-    List contextArgs = const [],
+    required Map<String, dynamic> options,
   }) async {
+    final parsedOptions = FlutterWebAuth2Options.fromJson(options);
+
     // Validate callback url
     final callbackUri = Uri.parse(callbackUrlScheme);
 
@@ -76,7 +77,7 @@ class FlutterWebAuth2LinuxPlugin extends FlutterWebAuth2Platform {
     String? result;
 
     _authTimeout?.cancel();
-    _authTimeout = Timer(const Duration(seconds: 90), () {
+    _authTimeout = Timer(Duration(seconds: parsedOptions.timeout), () {
       _server?.close();
     });
 
