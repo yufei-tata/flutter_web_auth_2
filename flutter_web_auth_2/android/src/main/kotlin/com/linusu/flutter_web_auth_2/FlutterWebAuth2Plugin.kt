@@ -32,11 +32,11 @@ class FlutterWebAuth2Plugin(private var context: Context? = null, private var ch
       channel?.setMethodCallHandler(this)
   }
 
-  override public fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-      initInstance(binding.getBinaryMessenger(), binding.getApplicationContext())
+  override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+      initInstance(binding.binaryMessenger, binding.applicationContext)
   }
 
-  override public fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
       context = null
       channel = null
   }
