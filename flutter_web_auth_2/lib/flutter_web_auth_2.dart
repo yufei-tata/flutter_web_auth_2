@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth_2/src/options.dart';
 import 'package:flutter_web_auth_2_platform_interface/flutter_web_auth_2_platform_interface.dart';
 
-export 'src/linux.dart' hide html;
+export 'src/linux.dart';
 export 'src/options.dart';
 export 'src/windows.dart' if (dart.library.html) 'src/web.dart';
 

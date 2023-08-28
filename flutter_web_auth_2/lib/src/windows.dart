@@ -7,41 +7,6 @@ import 'package:flutter_web_auth_2_platform_interface/flutter_web_auth_2_platfor
 import 'package:url_launcher/url_launcher.dart';
 import 'package:window_to_front/window_to_front.dart';
 
-/// HTML code that generates a nice callback page.
-const html = '''
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Access Granted</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    html, body { margin: 0; padding: 0; }
-
-    main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
-    }
-
-    #text {
-      padding: 2em;
-      text-align: center;
-      font-size: 2rem;
-    }
-  </style>
-</head>
-<body>
-  <main>
-    <div id="text">You may now close this page</div>
-  </main>
-</body>
-</html>
-''';
-
 /// Implements the plugin interface for Windows.
 class FlutterWebAuth2WindowsPlugin extends FlutterWebAuth2Platform {
   HttpServer? _server;
@@ -85,7 +50,7 @@ class FlutterWebAuth2WindowsPlugin extends FlutterWebAuth2Platform {
 
     await _server!.listen((req) async {
       req.response.headers.add('Content-Type', 'text/html');
-      req.response.write(html);
+      req.response.write(parsedOptions.landingPageHtml);
       await req.response.close();
 
       result = req.requestedUri.toString();

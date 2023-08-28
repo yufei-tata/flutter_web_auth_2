@@ -9,6 +9,41 @@ const defaultIntentFlags = 1 << 29 | 1 << 28;
 /// | FLAG_ACTIVITY_NO_HISTORY`.
 const ephemeralIntentFlags = defaultIntentFlags | 1 << 30;
 
+/// Default HTML code that generates a nice callback page.
+const _defaultLandingPage = '''
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Access Granted</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body { margin: 0; padding: 0; }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+    }
+
+    #text {
+      padding: 2em;
+      text-align: center;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="text">You may now close this page</div>
+  </main>
+</body>
+</html>
+''';
+
 class FlutterWebAuth2Options {
   /// **Only has an effect on iOS and MacOS!**
   /// If this is `true`, an ephemeral web browser session
@@ -41,12 +76,19 @@ class FlutterWebAuth2Options {
   /// authentication process.
   final int timeout;
 
+  /// **Only has an effect on Linux and Windows!**
+  /// Can be used to customise the landing page which tells the user that the
+  /// authentication was successful. It is the literal HTML source code which
+  /// will be displayed using a `HttpServer`.
+  final String landingPageHtml;
+
   const FlutterWebAuth2Options({
     this.preferEphemeral = false,
     this.debugOrigin,
     this.intentFlags = defaultIntentFlags,
     this.windowName,
     this.timeout = 5 * 60,
+    this.landingPageHtml = _defaultLandingPage,
   });
 
   FlutterWebAuth2Options.fromJson(Map<String, dynamic> json)
@@ -54,7 +96,8 @@ class FlutterWebAuth2Options {
         debugOrigin = json['debugOrigin'],
         intentFlags = json['intentFlags'],
         windowName = json['windowName'],
-        timeout = json['timeout'];
+        timeout = json['timeout'],
+        landingPageHtml = json['landingPageHtml'];
 
   Map<String, dynamic> toJson() => {
         'preferEphemeral': preferEphemeral,
@@ -62,5 +105,6 @@ class FlutterWebAuth2Options {
         'intentFlags': intentFlags,
         'windowName': windowName,
         'timeout': timeout,
+        'landingPageHtml': landingPageHtml,
       };
 }
