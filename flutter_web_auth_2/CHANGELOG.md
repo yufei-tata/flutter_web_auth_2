@@ -1,3 +1,8 @@
+## 3.0.0-alpha.2
+
+- 🎉 Customizable landing page on Windows and Linux
+- 🌹 Update some files from official Flutter template
+
 ## 3.0.0-alpha.1
 
 - 🐛 Update platform interface version

@@ -1,3 +1,7 @@
+## 3.0.0-alpha.2
+
+- 🌹 Update some files from official Flutter template
+
 ## 3.0.0-alpha.0
 
 - 💥 Bump Dart SDK constraints to `>=2.15.0`
