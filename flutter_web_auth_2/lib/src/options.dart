@@ -59,7 +59,9 @@ class FlutterWebAuth2Options {
   /// **Only has an effect on Android!**
   /// Can be used to configure the intent flags for the custom tabs intent.
   /// Possible values can be found
-  /// [here](https://developer.android.com/reference/android/content/Intent#setFlags(int)).
+  /// [here](https://developer.android.com/reference/android/content/Intent#setFlags(int))
+  /// or by using the flags from the `Flag` class from
+  /// [android_intent_plus](https://pub.dev/packages/android_intent_plus).
   /// Use [ephemeralIntentFlags] if you want similar behaviour to
   /// [preferEphemeral] on Android.
   final int intentFlags;
