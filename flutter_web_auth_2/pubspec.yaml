@@ -14,15 +14,10 @@ screenshots:
   - description: 'flutter_web_auth_2 in action on MacOS'
     path: screen-macos.gif
 topics:
-  - android
   - authentication
-  - darwin
-  - ios
-  - linux
-  - macos
   - network
+  - oauth
   - web
-  - windows
 
 environment:
   sdk: ">=2.15.0 <4.0.0"
