@@ -1,3 +1,8 @@
+## 3.0.0-alpha.3
+
+- 🌹 Add more entries to the pubspec
+- 🌹 Add reference to `android_intent_plus`
+
 ## 3.0.0-alpha.2
 
 - 🎉 Customizable landing page on Windows and Linux

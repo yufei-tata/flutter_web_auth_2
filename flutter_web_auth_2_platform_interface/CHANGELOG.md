@@ -1,3 +1,7 @@
+## 3.0.0-alpha.3
+
+- 🌹 Add more entries to the pubspec
+
 ## 3.0.0-alpha.2
 
 - 🌹 Update some files from official Flutter template
