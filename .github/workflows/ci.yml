@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check-format:
+    name: Check format using flutter format
+    runs-on: ubuntu-latest
+    container: ghcr.io/cirruslabs/flutter:stable
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install melos
+        run: flutter pub global activate melos
+      - name: Initialize workspace
+        run: melos bootstrap
+      - name: Check format
+        run: melos exec -- dart format --output=none --set-exit-if-changed .
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    container: ghcr.io/cirruslabs/flutter:stable
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install melos
+        run: flutter pub global activate melos
+      - name: Initialize workspace
+        run: melos bootstrap
+      - name: Lint using flutter analyze
+        run: melos exec -- flutter analyze
