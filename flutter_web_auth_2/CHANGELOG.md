@@ -1,3 +1,7 @@
+## 3.0.0-alpha.4
+
+- 🐛 Trying a few attempts to fix iOS and MacOS implementations
+
 ## 3.0.0-alpha.3
 
 - 🌹 Add more entries to the pubspec
