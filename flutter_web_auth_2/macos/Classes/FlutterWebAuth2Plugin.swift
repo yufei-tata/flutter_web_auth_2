@@ -14,7 +14,7 @@ public class FlutterWebAuth2Plugin: NSObject, FlutterPlugin, ASWebAuthentication
         if call.method == "authenticate" {
             let url = URL(string: (call.arguments as! Dictionary<String, AnyObject>)["url"] as! String)!
             let callbackURLScheme = (call.arguments as! Dictionary<String, AnyObject>)["callbackUrlScheme"] as! String
-			let options = (call.arguments as! Dictionary<String, AnyObject>)["options"] as? Dictionary<String, AnyObject>
+            let options = (call.arguments as! Dictionary<String, AnyObject>)["options"] as? Dictionary<String, AnyObject>
 
             var keepMe: Any? = nil
             let completionHandler = { (url: URL?, err: Error?) in
@@ -34,7 +34,7 @@ public class FlutterWebAuth2Plugin: NSObject, FlutterPlugin, ASWebAuthentication
             }
 
             let session = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURLScheme, completionHandler: completionHandler)
-			session.prefersEphemeralWebBrowserSession = options["preferEphemeral"] ?? false
+            session.prefersEphemeralWebBrowserSession = options["preferEphemeral"] ?? false
             session.presentationContextProvider = self
 
             session.start()
@@ -46,6 +46,6 @@ public class FlutterWebAuth2Plugin: NSObject, FlutterPlugin, ASWebAuthentication
 
     @available(macOS 10.15, *)
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        return NSApplication.shared.windows.first { $0.isKeyWindow } ?? ASPresentationAnchor()
+        return self.view.window ?? NSApplication.shared.windows.first { $0.isKeyWindow } ?? ASPresentationAnchor()
     }
 }

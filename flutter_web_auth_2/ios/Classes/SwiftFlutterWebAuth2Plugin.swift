@@ -11,8 +11,6 @@ public class SwiftFlutterWebAuth2Plugin: NSObject, FlutterPlugin {
         registrar.addApplicationDelegate(instance)
     }
 
-    var completionHandler: ((URL?, Error?) -> Void)?
-
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if call.method == "authenticate",
            let arguments = call.arguments as? [String: AnyObject],
@@ -22,16 +20,16 @@ public class SwiftFlutterWebAuth2Plugin: NSObject, FlutterPlugin {
            let options = arguments["options"] as? Dictionary<String, AnyObject>
         {
             var sessionToKeepAlive: Any? // if we do not keep the session alive, it will get closed immediately while showing the dialog
-            completionHandler = { (url: URL?, err: Error?) in
-                self.completionHandler = nil
-                
-                if #available(iOS 12, *) {
-                    (sessionToKeepAlive as! ASWebAuthenticationSession).cancel()
-                } else if #available(iOS 11, *) {
-                    (sessionToKeepAlive as! SFAuthenticationSession).cancel()
+            let completionHandler = { (url: URL?, err: Error?) in
+
+                if (sessionToKeepAlive != nil) {
+                    if #available(iOS 12, *) {
+                        (sessionToKeepAlive as! ASWebAuthenticationSession).cancel()
+                    } else if #available(iOS 11, *) {
+                        (sessionToKeepAlive as! SFAuthenticationSession).cancel()
+                    }
+                    sessionToKeepAlive = nil
                 }
-                
-                sessionToKeepAlive = nil
 
                 if let err = err {
                     if #available(iOS 12, *) {
