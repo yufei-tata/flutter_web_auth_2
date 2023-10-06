@@ -95,7 +95,9 @@ public class SwiftFlutterWebAuth2Plugin: NSObject, FlutterPlugin {
                         return
                     }
                     session.presentationContextProvider = contextProvider
-                    session.prefersEphemeralWebBrowserSession = options["preferEphemeral"]!
+                    if let preferEphemeral = options["preferEphemeral"] as? Bool {
+                        session.prefersEphemeralWebBrowserSession = preferEphemeral
+                    }
                 }
 
                 session.start()
