@@ -1,3 +1,7 @@
+## 3.0.0-alpha.6
+
+- 🐛 Trying a few attempts to fix iOS implementations
+
 ## 3.0.0-alpha.5
 
 - 🌹 Fix iOS "screenshot"
