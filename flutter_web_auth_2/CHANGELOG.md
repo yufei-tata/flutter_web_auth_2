@@ -1,3 +1,8 @@
+## 3.0.0
+
+- 💥 Release next major version, yay!
+- 🐛 Fix Apple implementations
+
 ## 3.0.0-alpha.6
 
 - 🐛 Trying a few attempts to fix iOS implementations

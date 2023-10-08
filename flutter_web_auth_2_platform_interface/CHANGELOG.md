@@ -1,3 +1,7 @@
+## 3.0.0
+
+- 💥 Release next major version, yay!
+
 ## 3.0.0-alpha.3
 
 - 🌹 Add more entries to the pubspec
