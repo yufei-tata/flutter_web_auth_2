@@ -1,3 +1,7 @@
+## 3.0.1
+
+- 🌹 Better null-safe options
+
 ## 3.0.0
 
 - 💥 Release next major version, yay!
