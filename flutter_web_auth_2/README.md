@@ -183,6 +183,10 @@ If you have any experience in removing this limitation, please let me know!
 
 When you use this package for the first time, you may experience some problems. These are some of the most common solutions:
 
+### General troubleshooting steps
+
+- Run `flutter clean` and then `flutter pub upgrade`. Sometimes they work wonders!
+
 ### Troubleshooting `callbackUrlScheme`
 
 - `callbackUrlScheme` must be a valid schema string or else this library won't work
