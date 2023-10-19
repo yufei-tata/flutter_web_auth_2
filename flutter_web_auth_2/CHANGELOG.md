@@ -1,3 +1,7 @@
+## 3.0.2
+
+- 🌹 Fix deprecations in Gradle 8.x
+
 ## 3.0.1
 
 - 🌹 Better null-safe options
