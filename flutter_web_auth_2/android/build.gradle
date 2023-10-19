@@ -2,7 +2,7 @@ group 'com.linusu.flutter_web_auth_2'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.7.22'
     repositories {
         google()
         mavenCentral()
@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-allprojects {
+rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
@@ -32,8 +32,8 @@ android {
     compileSdkVersion 34
 
     compileOptions {
-        sourceCompatibility project.sourceCompatibility
-        targetCompatibility project.targetCompatibility
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
@@ -50,5 +50,6 @@ android {
 
     dependencies {
         implementation 'androidx.browser:browser:1.6.0'
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     }
 }
