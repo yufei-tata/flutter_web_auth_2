@@ -7,14 +7,15 @@ import 'package:flutter_web_auth_2_platform_interface/flutter_web_auth_2_platfor
 import 'package:url_launcher/url_launcher.dart';
 import 'package:window_to_front/window_to_front.dart';
 
-/// Implements the plugin interface for Windows.
-class FlutterWebAuth2LinuxPlugin extends FlutterWebAuth2Platform {
+/// Implements the plugin interface using an internal server (currently used by
+/// Windows and Linux).
+class FlutterWebAuth2ServerPlugin extends FlutterWebAuth2Platform {
   HttpServer? _server;
   Timer? _authTimeout;
 
-  /// Registers the Windows implementation.
+  /// Registers the internal server implementation.
   static void registerWith() {
-    FlutterWebAuth2Platform.instance = FlutterWebAuth2LinuxPlugin();
+    FlutterWebAuth2Platform.instance = FlutterWebAuth2ServerPlugin();
   }
 
   @override

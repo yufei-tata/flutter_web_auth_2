@@ -46,13 +46,13 @@ flutter:
       ios:
         pluginClass: FlutterWebAuth2Plugin
       linux:
-        dartPluginClass: FlutterWebAuth2LinuxPlugin
-        fileName: src/linux.dart
+        dartPluginClass: FlutterWebAuth2ServerPlugin
+        fileName: src/server.dart
       macos:
         pluginClass: FlutterWebAuth2Plugin
       web:
         pluginClass: FlutterWebAuth2WebPlugin
         fileName: src/web.dart
       windows:
-        dartPluginClass: FlutterWebAuth2WindowsPlugin
-        fileName: src/windows.dart
+        dartPluginClass: FlutterWebAuth2ServerPlugin
+        fileName: src/server.dart
