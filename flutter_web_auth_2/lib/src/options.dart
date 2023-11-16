@@ -97,12 +97,14 @@ class FlutterWebAuth2Options {
         landingPageHtml = landingPageHtml ?? _defaultLandingPage;
 
   FlutterWebAuth2Options.fromJson(Map<String, dynamic> json)
-      : preferEphemeral = json['preferEphemeral'],
-        debugOrigin = json['debugOrigin'],
-        intentFlags = json['intentFlags'],
-        windowName = json['windowName'],
-        timeout = json['timeout'],
-        landingPageHtml = json['landingPageHtml'];
+      : this(
+          preferEphemeral: json['preferEphemeral'],
+          debugOrigin: json['debugOrigin'],
+          intentFlags: json['intentFlags'],
+          windowName: json['windowName'],
+          timeout: json['timeout'],
+          landingPageHtml: json['landingPageHtml'],
+        );
 
   Map<String, dynamic> toJson() => {
         'preferEphemeral': preferEphemeral,
