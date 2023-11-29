@@ -71,6 +71,6 @@ class FlutterWebAuth2ServerPlugin extends FlutterWebAuth2Platform {
 
   @override
   Future clearAllDanglingCalls() async {
-    await _server?.close(force: true);
+    // await _server?.close(force: true);
   }
 }
